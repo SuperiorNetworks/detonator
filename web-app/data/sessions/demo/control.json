@@ -1,0 +1,9 @@
+{
+    "version": 1780954310,
+    "mode": "stop",
+    "command_id": "stop_6a2734c6ba2535.79715292",
+    "server_epoch_ms": 1780954310762,
+    "start_epoch_ms": 1780954310762,
+    "start_audio_time": 0,
+    "buffer_seconds": 29
+}

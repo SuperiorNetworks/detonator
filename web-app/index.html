@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Sandstorm Relay Timeline</title>
+  <link rel="stylesheet" href="assets/style.css?v=manualrelays1">
+</head>
+<body>
+  <div class="app-bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="bolt">⚡</div>
+      <div>
+        <h1>Sandstorm Relay Timeline</h1>
+        <p>MP3 synced trigger timeline for T-Display S3 relay control</p>
+      </div>
+    </div>
+    <div class="status-wrap">
+      <div id="syncStatus" class="pill offline"><span></span> Offline</div>
+      <button class="icon-btn" id="helpBtn">?</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card session-card">
+      <h2>Session</h2>
+
+      <label>Session name</label>
+      <div class="inline">
+        <input id="sessionName" value="demo" autocomplete="off">
+        <button id="loadBtn" class="btn purple">Load</button>
+      </div>
+
+      <label>Upload MP3</label>
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="audioFile" accept="audio/mpeg,audio/mp3">
+        <div class="cloud">☁</div>
+        <strong>Choose or drop MP3</strong>
+        <small id="fileName">No file chosen</small>
+      </label>
+    </section>
+
+    <section class="card player-card">
+      <h2>Audio Player</h2>
+
+      <div class="wavebox">
+        <canvas id="waveCanvas"></canvas>
+        <div class="playhead" id="wavePlayhead"></div>
+      </div>
+
+      <audio id="audio" controls preload="metadata"></audio>
+
+      <div class="transport">
+        <button id="playBtn" class="round main">▶</button>
+        <button id="pauseBtn" class="round">⏸</button>
+        <button id="stopBtn" class="round red">■</button>
+        <button id="triggerNowBtn" class="btn purple grow">＋ Trigger Now</button>
+      </div>
+    </section>
+
+    <section class="card time-card">
+      <div class="clock-icon">⏱</div>
+      <div class="bigtime" id="currentTime">0:00.000</div>
+      <p>Current Position</p>
+      <div class="subtime" id="selectedTime">0:00.000</div>
+      <p>Selected Time</p>
+    </section>
+
+    <section class="card timeline-card">
+      <div class="section-head">
+        <h2>Timeline</h2>
+        <span>Click/tap the timeline to add a trigger.</span>
+        <div class="spacer"></div>
+        <button id="zoomOut" class="small-btn">−</button>
+        <input id="zoomRange" type="range" min="1" max="5" value="1">
+        <button id="zoomIn" class="small-btn">＋</button>
+      </div>
+      <div class="timeline-wrap" id="timelineWrap">
+        <canvas id="timelineCanvas"></canvas>
+      </div>
+    </section>
+
+    <section class="card editor-card">
+      <h2>Trigger Editor</h2>
+
+      <label>Time seconds</label>
+      <input id="timeInput" type="number" min="0" step="0.001" value="0">
+
+      <label>Relay 1–16</label>
+      <select id="relayInput"></select>
+
+      <label>Action</label>
+      <div class="seg">
+        <button id="onBtn" class="seg-btn active on">⏻ ON</button>
+        <button id="offBtn" class="seg-btn off">⏻ OFF</button>
+      </div>
+
+      <label>Label optional</label>
+      <input id="labelInput" placeholder="e.g. Fog relay on">
+
+      <div class="editor-actions">
+        <button id="saveTriggerBtn" class="btn purple">⚡ Save Trigger</button>
+        <button id="deleteTriggerBtn" class="btn danger">🗑 Delete</button>
+      </div>
+      <button id="newTriggerBtn" class="btn ghost full">＋ New Trigger</button>
+    </section>
+
+    <section class="card monitor-card">
+      <div class="section-head">
+        <h2>Relay Monitor</h2>
+        <div class="spacer"></div>
+        <button id="allRelaysOffBtn" class="small-btn danger-small">All Off</button>
+      </div>
+      <div id="relayGrid" class="relay-grid"></div>
+      <div class="legend">
+        <span><b class="dot green"></b> ON</span>
+        <span><b class="dot gray"></b> OFF</span>
+        <span><b class="dot amber"></b> Scheduled</span>
+      </div>
+    </section>
+
+    <section class="card live-card">
+      <h2>Live Control</h2>
+
+      <label>T-Display S3 Device Name</label>
+      <div class="inline">
+        <input id="espUrl" value="tdisplay1" placeholder="tdisplay1">
+        <button id="saveEspBtn" class="btn ok">✓</button>
+      </div>
+
+      <p class="device-status"><span class="red-dot"></span>Status: <b id="deviceStatus">Waiting</b></p>
+
+      <button id="simulateBtn" class="btn blue full">▶ Sync Simulate Timeline</button>
+      <button id="sendLiveBtn" class="btn green full">🚀 Send Live Timeline</button>
+
+      <div class="buffer">
+        <div class="ring"><span>30</span><small>SEC</small></div>
+        <p>30 second buffer for T-Display sync</p>
+        <small>The command queues on the HTTPS server. T-Display polls it and all connected browsers start the MP3 together.</small>
+      </div>
+    </section>
+
+    <section class="card triggers-card">
+      <div class="section-head">
+        <h2>Triggers <span id="triggerCount">(0)</span></h2>
+        <div class="spacer"></div>
+        <button id="sortBtn" class="small-btn">Sort</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Time</th><th>Relay</th><th>Action</th><th>Label</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="triggerRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="helpDialog">
+    <h2>How to use</h2>
+    <p>Use the same session name on all browsers. Upload MP3, add triggers, simulate, then Send Live Timeline. For cloud-poll ESP use device name <b>tdisplay1</b>, not an IP address.</p>
+    <button class="btn purple full" onclick="helpDialog.close()">Close</button>
+  </dialog>
+
+  <script src="assets/app.js?v=manualrelays1"></script>
+</body>
+</html>

@@ -111,3 +111,9 @@ temp/
 # Manus version file (auto-generated, not part of source)
 client/public/__manus__/version.json
 .project-config.json
+
+# Ignore uploaded audio files (too large for git)
+web-app/data/uploads/*/audio.mp3
+
+# Never commit WiFi credentials — edit firmware locally only
+# firmware/sandstorm-esp32/sandstorm_relay_controller.ino is safe (credentials scrubbed)
