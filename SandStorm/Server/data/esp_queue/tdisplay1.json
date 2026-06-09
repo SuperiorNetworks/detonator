@@ -1,0 +1,16 @@
+{
+    "ok": true,
+    "device": "tdisplay1",
+    "has_command": true,
+    "queued_at_ms": 1780956481632,
+    "command_id": "manual_6a273d419a38b3.87523974",
+    "payload": {
+        "type": "manual_relay",
+        "session": "demo",
+        "server_epoch_ms": 1780956481632,
+        "queued_at_ms": 1780956481632,
+        "start_epoch_ms": 1780956481632,
+        "command": "all_off",
+        "state": 0
+    }
+}

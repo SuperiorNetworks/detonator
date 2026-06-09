@@ -1,0 +1,20 @@
+{
+    "version": 1780951974,
+    "audioUrl": "api\/audio.php?session=demo",
+    "triggers": [
+        {
+            "id": "q79kl2h5mq5nburf",
+            "time": 1.5,
+            "relay": 1,
+            "action": "ON",
+            "label": ""
+        },
+        {
+            "id": "x180x3cemq5ndi27",
+            "time": 10,
+            "relay": 2,
+            "action": "ON",
+            "label": ""
+        }
+    ]
+}
